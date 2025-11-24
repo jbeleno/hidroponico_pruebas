@@ -32,7 +32,23 @@ docker-compose exec python python create_database.py
 docker-compose exec python python test_database.py
 ```
 
-### 4. Acceder a la aplicación
+### 4. Ejecutar pruebas automatizadas
+
+```bash
+# Instalar dependencias de testing
+pip install -r requirements.txt
+
+# Ejecutar todas las pruebas
+pytest tests/
+
+# Solo pruebas unitarias
+pytest tests/ -m unit
+
+# Solo pruebas de integración (requiere Chrome)
+pytest tests/ -m integration
+```
+
+### 5. Acceder a la aplicación
 
 - **Frontend**: Abre `frontend/index.html` en tu navegador
 - **API Backend**: http://localhost:8000
@@ -53,6 +69,10 @@ docker-compose exec python python test_database.py
 │   ├── index.html         # Interfaz web
 │   ├── styles.css         # Estilos
 │   └── app.js             # Lógica JavaScript
+├── tests/                 # Pruebas automatizadas
+│   ├── conftest.py       # Configuración pytest
+│   ├── test_unit_*.py    # Pruebas unitarias
+│   └── test_integration_*.py  # Pruebas de integración
 ├── JSON.json              # Modelo de base de datos
 ├── create_database.py     # Script de creación de BD
 ├── test_database.py       # Script de pruebas
@@ -180,6 +200,38 @@ Las variables de entorno se configuran en `docker-compose.yml`:
 ### Error al crear/editar registros
 - Verifica que los campos requeridos estén completos
 - Revisa las foreign keys (deben existir los registros relacionados)
+
+## 🧪 Pruebas Automatizadas
+
+El proyecto incluye pruebas automatizadas usando pytest y Selenium:
+
+### Pruebas Unitarias
+
+- **Modelos** (`test_unit_models.py`): Pruebas para los modelos de SQLAlchemy
+- **Schemas** (`test_unit_schemas.py`): Pruebas para los esquemas de Pydantic
+- **API** (`test_unit_api.py`): Pruebas para los endpoints de FastAPI
+
+### Pruebas de Integración
+
+- **Selenium** (`test_integration_selenium.py`): Pruebas end-to-end del frontend
+
+### Ejecutar Pruebas
+
+```bash
+# Todas las pruebas
+pytest tests/
+
+# Solo pruebas unitarias
+pytest tests/ -m unit
+
+# Solo pruebas de integración
+pytest tests/ -m integration
+
+# Con cobertura
+pytest tests/ --cov=backend --cov-report=html
+```
+
+Para más información, consulta `tests/README.md`.
 
 ## 📄 Licencia
 
