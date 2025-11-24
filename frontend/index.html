@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Hidropónico - Gestión</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌱 Sistema Hidropónico</h1>
+            <p>Gestión de Base de Datos</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-entity="empresas">Empresas</button>
+            <button class="tab-btn" data-entity="personas">Personas</button>
+            <button class="tab-btn" data-entity="sedes">Sedes</button>
+            <button class="tab-btn" data-entity="bloques">Bloques</button>
+            <button class="tab-btn" data-entity="tipos-espacio">Tipos Espacio</button>
+            <button class="tab-btn" data-entity="espacios">Espacios</button>
+            <button class="tab-btn" data-entity="tipos-estructura">Tipos Estructura</button>
+            <button class="tab-btn" data-entity="estructuras">Estructuras</button>
+            <button class="tab-btn" data-entity="usuarios">Usuarios</button>
+            <button class="tab-btn" data-entity="roles">Roles</button>
+            <button class="tab-btn" data-entity="usuarios-roles">Usuarios-Roles</button>
+            <button class="tab-btn" data-entity="metodos-acceso">Métodos Acceso</button>
+            <button class="tab-btn" data-entity="accesos-espacio">Accesos Espacio</button>
+            <button class="tab-btn" data-entity="tipos-cultivo">Tipos Cultivo</button>
+            <button class="tab-btn" data-entity="cultivos">Cultivos</button>
+            <button class="tab-btn" data-entity="variedades-cultivo">Variedades Cultivo</button>
+            <button class="tab-btn" data-entity="fases-produccion">Fases Producción</button>
+            <button class="tab-btn" data-entity="cultivos-fases">Cultivos-Fases</button>
+            <button class="tab-btn" data-entity="nutrientes">Nutrientes</button>
+            <button class="tab-btn" data-entity="fases-nutriente">Fases-Nutriente</button>
+        </nav>
+
+        <main>
+            <div class="toolbar">
+                <button class="btn btn-primary" onclick="showCreateForm()">➕ Nuevo</button>
+                <button class="btn btn-secondary" onclick="loadData()">🔄 Actualizar</button>
+            </div>
+
+            <div id="table-container">
+                <table id="data-table">
+                    <thead id="table-head"></thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+
+            <div id="message" class="message"></div>
+        </main>
+
+        <!-- Modal para crear/editar -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modal-title">Nuevo Registro</h2>
+                <form id="entity-form"></form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: hidroponico_db
+    environment:
+      POSTGRES_DB: hidroponico
+      POSTGRES_USER: www-admin
+      POSTGRES_PASSWORD: hello!
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U www-admin -d hidroponico"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  python:
+    build: .
+    container_name: hidroponico_python
+    volumes:
+      - .:/app
+      - ./JSON.json:/app/JSON.json
+    working_dir: /app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: hidroponico
+      DB_USER: www-admin
+      DB_PASSWORD: hello!
+    command: tail -f /dev/null  # Mantiene el contenedor corriendo
+
+  backend:
+    build: .
+    container_name: hidroponico_backend
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: hidroponico
+      DB_USER: www-admin
+      DB_PASSWORD: hello!
+    ports:
+      - "8000:8000"
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
+
