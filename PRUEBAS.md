@@ -232,137 +232,95 @@ pytest tests/test_unit_api.py -v
 
 ## Pruebas de Integración
 
-**Archivo**: `tests/test_integration_selenium.py`
+**Archivo**: `tests/test_integration_flow.py`
 
 ### Descripción
-Pruebas end-to-end (E2E) del frontend usando Selenium WebDriver. Estas pruebas simulan la interacción de un usuario real con la interfaz web.
+Pruebas end-to-end (E2E) del frontend usando Selenium WebDriver con un enfoque de **flujo completo de ciclo de vida**. Estas pruebas simulan la interacción de un usuario real con la interfaz web, ejecutando todas las operaciones CRUD en un orden que respeta las dependencias entre entidades.
 
 ### Características
 - **Navegador**: Chrome (configurado con ChromeDriverManager)
 - **Modo**: Visible (no headless) para visualización durante las pruebas
-- **Delays visuales**: Incluye pausas para visualización de las acciones
-- **Escritura visible**: Escribe carácter por carácter para simular usuario real
+- **Delays optimizados**: Tiempos reducidos para ejecución más rápida pero aún visible
+- **Gestión de dependencias**: Crea, actualiza y elimina entidades respetando las relaciones de clave foránea
+- **Flujo único**: Una sola prueba que ejecuta todo el ciclo de vida
 
-### Pruebas CRUD Implementadas
+### Flujo de Prueba: `test_full_lifecycle`
 
-Se han implementado pruebas CRUD completas (Crear, Leer, Actualizar, Eliminar) para las siguientes entidades:
+La prueba ejecuta un ciclo completo en **3 fases**:
 
-1. **Empresas** (`test_crud_empresas`)
-   - Crear empresa con nombre, NIT y estado activo
-   - Editar empresa modificando nombre y NIT
-   - Eliminar empresa
+#### **Fase 1: Creación (Orden de Dependencias)**
+Crea todas las entidades en el orden correcto para satisfacer las dependencias:
 
-2. **Personas** (`test_crud_personas`)
-   - Crear persona con datos completos
-   - Editar persona modificando nombre y teléfono
-   - Eliminar persona
+**Entidades Independientes:**
+1. Empresa
+2. Persona
+3. Tipo Cultivo
+4. Nutriente
+5. Rol
+6. Tipo Espacio
+7. Fase Producción
+8. Tipo Estructura
 
-3. **Tipos de Cultivo** (`test_crud_tipos_cultivo`)
-   - Crear tipo de cultivo con nombre y descripción
-   - Editar tipo de cultivo
-   - Eliminar tipo de cultivo
+**Entidades Dependientes:**
+9. Usuario (depende de Persona, Empresa)
+10. Sede (depende de Empresa, Persona)
+11. Bloque (depende de Sede)
+12. Espacio (depende de Bloque, Tipo Espacio)
+13. Estructura (depende de Espacio, Tipo Estructura)
+14. Cultivo (depende de Tipo Cultivo)
+15. Variedad Cultivo (depende de Cultivo)
+16. Cultivo Fase (depende de Variedad Cultivo, Fase Producción)
+17. Fase Nutriente (depende de Cultivo Fase, Nutriente)
+18. Método Acceso (depende de Usuario)
+19. Usuario Rol (depende de Usuario, Rol)
+20. Acceso Espacio (depende de Usuario, Espacio)
 
-4. **Nutrientes** (`test_crud_nutrientes`)
-   - Crear nutriente con nombre, fórmula química y descripción
-   - Editar nutriente
-   - Eliminar nutriente
+#### **Fase 2: Actualización**
+Actualiza todas las entidades creadas para verificar la funcionalidad de edición.
 
-5. **Roles** (`test_crud_roles`)
-   - Crear rol con nombre y descripción
-   - Editar rol
-   - Eliminar rol
-
-6. **Tipos de Espacio** (`test_crud_tipos_espacio`)
-   - Crear tipo de espacio
-   - Editar tipo de espacio
-   - Eliminar tipo de espacio
-
-7. **Fases de Producción** (`test_crud_fases_produccion`)
-   - Crear fase con nombre, duración estimada y descripción
-   - Editar fase modificando duración
-   - Eliminar fase
-
-8. **Tipos de Estructura** (`test_crud_tipos_estructura`)
-   - Crear tipo de estructura
-   - Editar tipo de estructura
-   - Eliminar tipo de estructura
-
-9. **Métodos de Acceso** (`test_crud_metodos_acceso`)
-   - Crear método de acceso con usuario_id, tipo y dato biométrico
-   - Editar método de acceso
-   - Eliminar método de acceso
-
-10. **Sedes** (`test_crud_sedes`)
-    - Crear sede con empresa_id, nombre, dirección y coordenadas
-    - Editar sede
-    - Eliminar sede
-
-11. **Bloques** (`test_crud_bloques`)
-    - Crear bloque con sede_id, nombre y descripción
-    - Editar bloque
-    - Eliminar bloque
-
-12. **Espacios** (`test_crud_espacios`)
-    - Crear espacio con dimensiones y capacidad
-    - Editar espacio modificando capacidad
-    - Eliminar espacio
-
-13. **Estructuras** (`test_crud_estructuras`)
-    - Crear estructura con código, nombre, capacidad y posiciones
-    - Editar estructura
-    - Eliminar estructura
-
-14. **Usuarios** (`test_crud_usuarios`)
-    - Crear usuario con persona_id, empresa_id, username y password_hash
-    - Editar usuario
-    - Eliminar usuario
-
-15. **Usuarios-Roles** (`test_crud_usuarios_roles`)
-    - Crear relación usuario-rol
-    - Editar relación cambiando rol_id
-    - Eliminar relación
-
-16. **Accesos Espacio** (`test_crud_accesos_espacio`)
-    - Crear acceso a espacio con usuario_id, espacio_id y método
-    - Editar acceso
-    - Eliminar acceso
-
-17. **Cultivos** (`test_crud_cultivos`)
-    - Crear cultivo con tipo_cultivo_id, nombre científico y descripción
-    - Editar cultivo
-    - Eliminar cultivo
-
-18. **Variedades Cultivo** (`test_crud_variedades_cultivo`)
-    - Crear variedad con cultivo_id, nombre, descripción y características
-    - Editar variedad
-    - Eliminar variedad
-
-19. **Cultivos-Fases** (`test_crud_cultivos_fases`)
-    - Crear relación cultivo-fase con orden y duración
-    - Editar relación modificando orden y duración
-    - Eliminar relación
-
-20. **Fases-Nutriente** (`test_crud_fases_nutriente`)
-    - Crear relación fase-nutriente con cantidad, unidad y frecuencia
-    - Editar relación modificando cantidad y frecuencia
-    - Eliminar relación
+#### **Fase 3: Eliminación (Orden Inverso)**
+Elimina todas las entidades en **orden inverso** a la creación para evitar violaciones de clave foránea:
+1. Acceso Espacio
+2. Usuario Rol
+3. Método Acceso
+4. Fase Nutriente
+5. Cultivo Fase
+6. Variedad Cultivo
+7. Cultivo
+8. Estructura
+9. Espacio
+10. Bloque
+11. Sede
+12. Usuario
+13. Tipo Estructura
+14. Fase Producción
+15. Tipo Espacio
+16. Rol
+17. Nutriente
+18. Tipo Cultivo
+19. Persona
+20. Empresa
 
 ### Funciones Auxiliares
 
 - `select_tab()`: Selecciona un tab específico en la interfaz
 - `open_create_modal()`: Abre el modal de creación
 - `save_form()`: Guarda el formulario
-- `edit_first_item()`: Edita el primer elemento de la tabla
-- `delete_first_item()`: Elimina el primer elemento de la tabla
-- `fill_text_field()`: Llena campos de texto de forma visible
+- `edit_last_item()`: Edita el último elemento creado
+- `delete_last_item()`: Elimina el último elemento creado
+- `fill_text_field()`: Llena campos de texto de forma rápida pero visible
 - `fill_number_field()`: Llena campos numéricos
 - `fill_checkbox()`: Marca/desmarca checkboxes
 - `fill_textarea()`: Llena textareas
+- `_get_first_row_id()`: Obtiene el ID de la primera fila de la tabla
 
 ### Ejecución
 ```bash
 # Requiere Chrome instalado
-pytest tests/test_integration_selenium.py -v -m integration
+pytest tests/test_integration_flow.py -v
+
+# Sin warnings para salida más limpia
+pytest tests/test_integration_flow.py -v --disable-warnings
 ```
 
 ---
@@ -382,13 +340,14 @@ pytest tests/test_integration_selenium.py -v -m integration
 - ✅ **API**: 6 grupos de endpoints probados con casos exitosos y de error
 
 ### Pruebas de Integración
-- ✅ **CRUD Completo**: 20 entidades con operaciones CRUD completas
+- ✅ **Flujo Completo de Ciclo de Vida**: 1 prueba integral que cubre 20 entidades
+- ✅ **Gestión de Dependencias**: Creación, actualización y eliminación en orden correcto
 - ✅ **Interfaz de Usuario**: Navegación, formularios, modales, tablas
 - ✅ **Validación End-to-End**: Flujo completo desde frontend hasta base de datos
 
 ### Estadísticas
-- **Total de pruebas unitarias**: ~50+ pruebas
-- **Total de pruebas de integración**: 20 pruebas CRUD completas
+- **Total de pruebas unitarias**: ~51 pruebas
+- **Total de pruebas de integración**: 1 prueba de flujo completo (cubre 20 entidades)
 - **Entidades probadas**: 20 entidades del sistema
 - **Cobertura de endpoints**: Todos los endpoints principales de la API
 
@@ -446,7 +405,7 @@ run_tests.bat
 
 2. **Datos Únicos**: Las pruebas generan IDs únicos usando UUID para evitar conflictos entre ejecuciones.
 
-3. **Pruebas de Integración**: Las pruebas de Selenium son más lentas y requieren que el navegador esté visible. Se pueden ejecutar en modo headless comentando la línea correspondiente.
+3. **Pruebas de Integración**: La prueba de flujo completo está optimizada para ejecución rápida pero visible. Los tiempos de espera son reducidos (0.5s entre acciones principales, 0.01s entre caracteres) para acelerar la ejecución sin perder visibilidad.
 
 4. **Fixtures**: Se utilizan fixtures de pytest para compartir configuración entre pruebas (cliente de API, sesión de BD, datos de ejemplo).
 
@@ -454,14 +413,7 @@ run_tests.bat
 
 ---
 
-## Mejoras Futuras
 
-- [ ] Agregar pruebas de rendimiento
-- [ ] Implementar pruebas de carga
-- [ ] Agregar pruebas de seguridad
-- [ ] Implementar pruebas de accesibilidad
-- [ ] Agregar pruebas de compatibilidad entre navegadores
-- [ ] Implementar CI/CD con ejecución automática de pruebas
 
 ---
 
