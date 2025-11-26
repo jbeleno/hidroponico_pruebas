@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Hidropónico - Estrategia de Pruebas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            background: #0f172a;
+        }
+
+        .slide {
+            width: 960px;
+            height: 540px;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Layout utilities */
+        .row { flex-direction: row; }
+        .col { flex-direction: column; }
+        .center { justify-content: center; align-items: center; text-align: center; }
+        .space-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .fill-width { flex: 1; }
+        .fill-height { flex: 1; display: flex; flex-direction: column; }
+
+        .gap-sm { gap: 0.5rem; }
+        .gap-md { gap: 1rem; }
+        .gap-lg { gap: 1.5rem; }
+        .gap-xl { gap: 2rem; }
+
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .p-12 { padding: 3rem; }
+        .p-16 { padding: 4rem; }
+
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+
+        h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; margin: 0; }
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.25rem; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.5rem; }
+
+        .text-6xl { font-size: 3.75rem; }
+        .text-5xl { font-size: 3rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-base { font-size: 1rem; }
+        .text-sm { font-size: 0.875rem; }
+
+        .opacity-90 { opacity: 0.9; }
+        .opacity-80 { opacity: 0.8; }
+        .opacity-70 { opacity: 0.7; }
+
+        ul, ol { margin-left: 2rem; line-height: 1.8; }
+        li { margin-bottom: 0.75rem; }
+        li:last-child { margin-bottom: 0; }
+
+        .card-rect { padding: 2rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); }
+
+        code {
+            background-color: #1e293b;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .highlight { color: #38bdf8; font-weight: 600; }
+        .success { color: #10b981; }
+        .warning { color: #f59e0b; }
+    </style>
+</head>
+<body class="theme-dark">
+
+    <!-- SLIDE 0: EQUIPO DE PRUEBAS -->
+    <section class="slide p-16 col center" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="text-4xl mb-4" style="color: #38bdf8;">Equipo de Pruebas</h2>
+        <ul class="text-2xl mb-8" style="color: #cbd5e1; list-style: none; padding: 0;">
+            <li>Juan Camilo Barranco</li>
+            <li>Jesus Adolfo Beleño</li>
+            <li>Juan Pablo Forero</li>
+        </ul>
+    </section>
+
+    <!-- SLIDE 1: PORTADA UNIVERSIDAD -->
+    <section class="slide p-16 col center" style="background-color: #020617; color: #f1f5f9;">
+        <h1 class="text-5xl mb-4" style="color: #38bdf8;">Universidad Surcolombiana</h1>
+        <p class="text-2xl mb-2" style="color: #cbd5e1;">Facultad de Ingeniería</p>
+        <p class="text-xl mb-8" style="color: #cbd5e1;">Materia: Software Factory</p>
+        <h2 class="text-4xl mb-4" style="color: #38bdf8;">Sistema Hidropónico</h2>
+        <p class="text-2xl mb-8" style="color: #cbd5e1;">Estrategia de Pruebas y Desarrollo</p>
+        <div class="fill-height col center">
+            <p class="text-xl" style="color: #94a3b8;">Suite de Pruebas Automatizadas</p>
+            <p class="text-lg mt-4" style="color: #94a3b8;">52 pruebas • 100% Cobertura • 3 minutos</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: INTRODUCCIÓN AL PROYECTO -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">📌 Introducción</h2>
+        <div class="fill-height col gap-md">
+            <p class="text-lg" style="color: #cbd5e1;">Aplicación completa de gestión para agricultura hidropónica:</p>
+            <ul class="text-lg" style="color: #cbd5e1;">
+                    <li><span class="highlight">Base de Datos PostgreSQL</span>: 20 entidades relacionadas</li>
+                    <li><span class="highlight">API REST con FastAPI</span>: Endpoints CRUD completos</li>
+                    <li><span class="highlight">Frontend Web</span>: Interfaz HTML/CSS/JavaScript</li>
+                    <li><span class="highlight">Suite de Pruebas</span>: Cobertura automatizada completa</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: OBJETIVO DEL PROYECTO -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">🎯 Objetivo del Proyecto</h2>
+        <div class="fill-height col gap-lg">
+            <p class="text-lg" style="color: #cbd5e1;">Diseñar e implementar una estrategia de pruebas integral que garantice:</p>
+            <ul class="text-lg" style="color: #cbd5e1;">
+                <li>✅ <span class="success">Calidad del código</span>: Validación de modelos, esquemas y lógica</li>
+                <li>✅ <span class="success">Funcionalidad API</span>: Verificación de todos los endpoints REST</li>
+                <li>✅ <span class="success">Experiencia de usuario</span>: Pruebas end-to-end del flujo completo</li>
+                <li>✅ <span class="success">Gestión de dependencias</span>: Respeto de relaciones entre entidades</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: MODELO DE DATOS -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">🏗️ Modelo de Datos - 5 Dominios</h2>
+        <div class="fill-height col">
+            <div class="row gap-lg">
+                <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <h4 style="color: #38bdf8;">1. Organización</h4>
+                    <p style="color: #cbd5e1; font-size: 0.95rem;">Empresa, Sede, Bloque, Espacio</p>
+                </div>
+                <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <h4 style="color: #38bdf8;">2. Usuarios</h4>
+                    <p style="color: #cbd5e1; font-size: 0.95rem;">Persona, Usuario, Rol, Acceso</p>
+                </div>
+            </div>
+            <div class="row gap-lg mt-4">
+                <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <h4 style="color: #38bdf8;">3. Infraestructura</h4>
+                    <p style="color: #cbd5e1; font-size: 0.95rem;">TipoEspacio, Estructura, Tipos</p>
+                </div>
+                <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <h4 style="color: #38bdf8;">4-5. Cultivos y Nutrición</h4>
+                    <p style="color: #cbd5e1; font-size: 0.95rem;">Cultivos, Fases, Nutrientes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: PIRÁMIDE DE PRUEBAS -->
+         
+        <section class="slide p-16 col center" style="background-color: #0f172a; color: #f1f5f9; min-height: 800px;">
+             <h2 class="mb-8" style="color: #38bdf8; margin-bottom: 200px;">🧪 Enfoque y Pirámide de Pruebas</h2>
+            <div class="fill-height row center gap-lg" style="align-items: flex-start; min-height: 500px;">
+                <div style="flex:0 0 420px; display:flex; align-items:center; justify-content:center; height:500px;">
+                    <img src="image.jpg" alt="Pirámide de pruebas" style="max-width: 400px; max-height: 480px;margin-top: 10%; border-radius: 12px; box-shadow:0 8px 16px rgba(0,0,0,0.18); background: #1e293b; padding: 1.5rem; display: block; margin: 0 auto;">
+                </div>
+                <div style="font-size: 1.1rem; color: #cbd5e1; max-width: 520px; text-align: left; margin: 0 0 0 2.5rem; align-self: flex-start;">
+                    <b>El apartado de pruebas es fundamental en cualquier proyecto profesional.</b> <br><br>
+                    <b>¿Por qué son importantes?</b>
+                    <ul style="margin: 0.5rem 0 0 1.5rem; color: #cbd5e1;">
+                        <li><b>Pruebas unitarias:</b> Garantizan que cada componente (modelo, schema, endpoint) funcione correctamente de forma aislada. Permiten detectar errores rápidamente y facilitan el mantenimiento y la evolución del código.</li>
+                        <li><b>Pruebas de integración:</b> Validan que los distintos módulos del sistema interactúan correctamente entre sí, asegurando la integridad de los flujos de datos y dependencias.</li>
+                        <li><b>Prueba E2E (End-to-End):</b> Simula el flujo real de usuario, comprobando que todo el sistema funciona como un todo, desde el inicio hasta el final del proceso.</li>
+                    </ul>
+                    <br>
+                    <b>Un enfoque estructurado de pruebas:</b> <br>
+                    - Reduce errores en producción.<br>
+                    - Aumenta la confianza en el sistema.<br>
+                    - Permite refactorizar y evolucionar el proyecto con seguridad.<br>
+                    - Facilita la integración continua y la automatización.<br>
+                    <p class="text-lg mt-4" style="color: #cbd5e1;"><span class="highlight">52 pruebas totales</span> • <span class="success">100% cobertura</span> • <span class="highlight">~3 minutos</span></p>
+                </div>
+            </div>
+        </section>
+
+    <!-- SLIDE 6: PRUEBAS UNITARIAS - VISIÓN GENERAL -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">📊 Pruebas Unitarias: Propósito y Alcance</h2>
+            <div class="fill-height col gap-md">
+                <div style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
+                    <b>¿Para qué sirven?</b><br>
+                    <ul style="color: #cbd5e1; margin-top: 0.5rem;">
+                        <li>Validan la lógica interna de cada modelo SQLAlchemy y schema Pydantic.</li>
+                        <li>Garantizan que los endpoints de la API respondan correctamente ante entradas válidas e inválidas.</li>
+                        <li>Permiten detectar errores en etapas tempranas, facilitando el mantenimiento y la evolución del código.</li>
+                    </ul>
+                </div>
+                <div class="row gap-lg mt-4">
+                    <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                        <h4 style="color: #38bdf8;">Modelos SQLAlchemy</h4>
+                        <p style="color: #cbd5e1;">13 pruebas (100% cobertura)</p>
+                    </div>
+                    <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                        <h4 style="color: #38bdf8;">Schemas Pydantic</h4>
+                        <p style="color: #cbd5e1;">8 pruebas (100% cobertura)</p>
+                    </div>
+                    <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                        <h4 style="color: #38bdf8;">Endpoints API</h4>
+                        <p style="color: #cbd5e1;">30 pruebas (100% cobertura)</p>
+                    </div>
+                </div>
+                <p class="text-base mt-4" style="color: #cbd5e1;">✅ Rápidas • ✅ Aisladas • ✅ Específicas. <br> <b>Ventaja:</b> Facilitan el refactor y la detección de regresiones.</p>
+            </div>
+    </section>
+
+    <!-- SLIDE 7: PRUEBA DE INTEGRACIÓN - EL DESAFÍO -->
+        <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">🔄 Prueba de Integración: Propósito y Valor</h2>
+            <div class="fill-height col gap-md">
+                <div style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
+                    <b>¿Por qué es clave?</b><br>
+                    <ul style="color: #cbd5e1; margin-top: 0.5rem;">
+                        <li>Simula el ciclo de vida completo de las entidades (creación, actualización, eliminación).</li>
+                        <li>Valida la interacción real entre backend y base de datos, asegurando que las dependencias y restricciones se respeten.</li>
+                        <li>Detecta errores de integridad referencial y asegura que el flujo CRUD es funcional de extremo a extremo.</li>
+                    </ul>
+                    <b>Una sola prueba integral puede validar la robustez de todo el sistema, asegurando que los componentes funcionan correctamente juntos, no solo por separado.</b>
+                </div>
+            </div>
+        </section>
+
+    <!-- SLIDE 8: FASE 1 - CREACIÓN (ORDEN DE DEPENDENCIAS) -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">🎬 Fase 1: Creación - Orden de Dependencias</h2>
+        <div class="fill-height col text-base" style="color: #cbd5e1; overflow-y: auto;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <p style="color: #38bdf8; font-weight: 600;">Nivel 1: Independientes</p>
+                    <ul style="margin-left: 1rem; font-size: 0.9rem; line-height: 1.6;">
+                        <li>Empresa, Persona, TipoCultivo</li>
+                        <li>Nutriente, Rol, TipoEspacio</li>
+                        <li>FaseProduccion, TipoEstructura</li>
+                    </ul>
+                </div>
+                <div>
+                    <p style="color: #38bdf8; font-weight: 600;">Nivel 2-5: Dependencias</p>
+                    <ul style="margin-left: 1rem; font-size: 0.9rem; line-height: 1.6;">
+                        <li>Usuario, Sede, Cultivo</li>
+                        <li>Bloque, Espacio, Estructura</li>
+                        <li>...hasta 20 entidades</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-4" style="color: #10b981; font-size: 0.95rem;">✅ Garantiza que cada entidad tiene sus dependencias satisfechas</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: FASE 2 - ACTUALIZACIÓN -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">✏️ Fase 2: Actualización</h2>
+        <div class="fill-height col gap-md">
+            <p class="text-lg" style="color: #cbd5e1;">Verificar que <span class="highlight">todas las 20 entidades</span> puedan ser editadas correctamente</p>
+            <ul class="text-base" style="color: #cbd5e1;">
+                <li>✅ Formularios de edición se cargan correctamente</li>
+                <li>✅ Datos existentes se muestran en los campos</li>
+                <li>✅ Cambios se guardan en la base de datos</li>
+                <li>✅ Interfaz se actualiza con los nuevos valores</li>
+            </ul>
+            <p class="text-sm mt-4" style="color: #94a3b8;">Valida que el flujo de usuario completo (CRUD) funciona end-to-end</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 10: FASE 3 - ELIMINACIÓN (ORDEN INVERSO) -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">🗑️ Fase 3: Eliminación - Orden Inverso</h2>
+        <div class="fill-height col">
+            <p class="text-base" style="color: #cbd5e1; margin-bottom: 1rem;">Eliminar exactamente en <span class="highlight">orden inverso</span> a la creación:</p>
+            <div style="background-color: #1e293b; color: #f1f5f9; padding: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.6; font-family: monospace;">
+                <div>20. AccesoEspacio → 19. UsuarioRol → 18. MetodoAcceso</div>
+                <div style="color: #38bdf8;">... (dependientes se eliminan primero) ...</div>
+                <div>3. TipoCultivo → 2. Persona → 1. Empresa</div>
+            </div>
+            <p class="text-sm mt-4" style="color: #10b981;">✅ Evita errores de clave foránea durante eliminación</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 11: OPTIMIZACIÓN DE RENDIMIENTO -->
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">⚡ Optimización de Rendimiento</h2>
+        <div class="fill-height col gap-lg">
+            <div class="row gap-lg">
+                <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <h4 style="color: #f59e0b;">❌ Antes</h4>
+                    <p style="color: #cbd5e1; font-size: 0.9rem;">Delay visual: <code>2.0s</code></p>
+                    <p style="color: #cbd5e1; font-size: 0.9rem;">Delay tipeo: <code>0.1s</code></p>
+                    <p style="color: #f59e0b; font-weight: 600;">~15-20 min</p>
+                </div>
+                <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+                    <h4 style="color: #10b981;">✅ Después</h4>
+                    <p style="color: #cbd5e1; font-size: 0.9rem;">Delay visual: <code>0.5s</code></p>
+                    <p style="color: #cbd5e1; font-size: 0.9rem;">Delay tipeo: <code>0.01s</code></p>
+                    <p style="color: #10b981; font-weight: 600;">~2-3 min (80% ↓)</p>
+                </div>
+            </div>
+            <p class="text-sm mt-4" style="color: #94a3b8;">✅ Sigue siendo visible para debugging, pero 80% más rápido</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 12: HERRAMIENTAS Y TECNOLOGÍAS -->
+        <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">🛠️ Herramientas de Pruebas</h2>
+            <div class="fill-height col text-base" style="color: #cbd5e1;">
+                <ul style="margin-left: 1rem; font-size: 1rem; line-height: 1.8;">
+                    <li><b>pytest:</b> Motor principal de pruebas, permite estructurar y ejecutar casos de forma eficiente.</li>
+                    <li><b>pytest-cov:</b> Genera reportes de cobertura, asegurando que el código relevante está cubierto.</li>
+                    <li><b>FastAPI TestClient:</b> Simula peticiones HTTP reales contra la API, ideal para pruebas de endpoints.</li>
+                    <li><b>Docker Compose:</b> Facilita la orquestación de servicios (API y base de datos) en entornos aislados y reproducibles.</li>
+                    <li><b>PostgreSQL:</b> Base de datos robusta para pruebas de integración realistas.</li>
+                </ul>
+            </div>
+        </section>
+
+    <!-- SLIDE 13: RESULTADOS Y MÉTRICAS -->
+        <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">📈 Resultados y Métricas</h2>
+            <div class="fill-height col gap-md">
+                <pre style="background:#1e293b;color:#f1f5f9;padding:1.5rem;border-radius:6px;font-size:1.1rem;line-height:1.6;box-shadow:0 8px 16px rgba(0,0,0,0.2);">
+    ┌─────────────────────────────┬─────────┬────────────┐
+    │ Componente                  │ Pruebas │ Cobertura  │
+    ├─────────────────────────────┼─────────┼────────────┤
+    │ Modelos SQLAlchemy          │   13    │   100%     │
+    │ Schemas Pydantic            │    8    │   100%     │
+    │ Endpoints API               │   30    │   100%     │
+    │ Flujo E2E Completo          │    1    │   100%     │
+    ├─────────────────────────────┼─────────┼────────────┤
+    │ TOTAL                       │   52    │   100%     │
+    └─────────────────────────────┴─────────┴────────────┘
+                </pre>
+            </div>
+        </section>
+
+    <!-- SLIDE 14: VENTAJAS DEL ENFOQUE -->
+        <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">💡 Arquitectura de Pruebas</h2>
+            <pre style="background:#1e293b;color:#f1f5f9;padding:1.5rem;border-radius:6px;font-size:1.1rem;line-height:1.6;">
+    ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+    │ Frontend      │───▶│ API FastAPI   │───▶│ PostgreSQL    │
+    │ (HTML/JS/CSS) │    │ (Backend)     │    │ (Base de Datos)│
+    └───────────────┘     └───────────────┘     └───────────────┘
+            │                   │                   │
+            └───────────────────┴───────────────────┘
+                            │
+                    ┌───────────────┐
+                    │ Suite de      │
+                    │ Pruebas       │
+                    └───────────────┘
+            </pre>
+        </section>
+
+    <!-- SLIDE 15: LECCIONES APRENDIDAS -->
+        <!-- SLIDE 15: LECCIONES APRENDIDAS -->
+        <!-- Eliminada por solicitud -->
+
+    <!-- SLIDE 16: CONCLUSIONES -->
+        <!-- SLIDE 16: CONCLUSIONES -->
+        <!-- Eliminada por solicitud -->
+
+    <!-- SLIDE 17: EJECUCIÓN DE PRUEBAS -->
+        <!-- SLIDE 18: DETALLES TÉCNICOS -->
+        <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">Detalles Técnicos</h2>
+            <ul class="text-base" style="color: #cbd5e1; line-height: 2;">
+                <li><b>Lenguaje backend:</b> Python 3.11</li>
+                <li><b>Framework API:</b> FastAPI</li>
+                <li><b>ORM:</b> SQLAlchemy 2.x</li>
+                <li><b>Base de datos:</b> PostgreSQL (Docker)</li>
+                <li><b>Testing:</b> pytest, pytest-cov, FastAPI TestClient</li>
+                <li><b>Orquestación:</b> Docker Compose</li>
+                <li><b>Comandos clave:</b> <code>pytest tests/ -v</code>, <code>pytest tests/ --cov=backend</code></li>
+                <li><b>Integración continua:</b> Listo para pipelines CI/CD</li>
+            </ul>
+        </section>
+
+        <!-- SLIDE 19: CONCLUSIONES -->
+        <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+            <h2 class="mb-6" style="color: #38bdf8;">Conclusiones</h2>
+            <ul class="text-base" style="color: #cbd5e1; line-height: 2;">
+                <li>La estrategia de pruebas garantiza robustez y calidad en el desarrollo del sistema.</li>
+                <li>El enfoque piramidal permite detectar errores en todos los niveles: unidad, integración y flujo completo.</li>
+                <li>La automatización y cobertura total facilitan el mantenimiento y la evolución del proyecto.</li>
+                <li>El uso de herramientas modernas y buenas prácticas permite una integración continua eficiente y confiable.</li>
+                <li>El trabajo colaborativo y la documentación clara son clave para el éxito en equipos de desarrollo profesional.</li>
+            </ul>
+        </section>
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-4" style="color: #38bdf8;">🚀 Cómo Ejecutar las Pruebas</h2>
+        <div class="fill-height col gap-md text-sm" style="color: #cbd5e1; font-family: monospace;">
+            <p><span class="highlight"># Todas las pruebas</span></p>
+            <div style="background-color: #1e293b; padding: 0.75rem; border-radius: 4px;">pytest tests/ -v</div>
+            
+            <p style="margin-top: 0.75rem;"><span class="highlight"># Solo pruebas unitarias</span></p>
+            <div style="background-color: #1e293b; padding: 0.75rem; border-radius: 4px;">pytest tests/ -m unit -v</div>
+            
+            <p style="margin-top: 0.75rem;"><span class="highlight"># Con cobertura</span></p>
+            <div style="background-color: #1e293b; padding: 0.75rem; border-radius: 4px;">pytest tests/ --cov=backend</div>
+        </div>
+    </section>
+
+    <!-- SLIDE 18: CIERRE -->
+        <!-- SLIDE 18: CIERRE -->
+        <!-- Eliminada por solicitud -->
+
+</body>
+</html>
