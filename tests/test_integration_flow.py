@@ -17,9 +17,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 import os
 
 # Tiempos de espera optimizados para velocidad pero manteniendo visualización
-VISUAL_DELAY = 0.5  # Reducido de 2.0 a 0.5
-SHORT_DELAY = 0.2   # Reducido de 1.0 a 0.2
-TYPING_DELAY = 0.01 # Reducido de 0.1 a 0.01 (casi instantáneo pero visible)
+VISUAL_DELAY = 0.2  # Reducido de 2.0 a 0.5
+SHORT_DELAY = 0.2  # Reducido de 1.0 a 0.2
+TYPING_DELAY = 0.005
 
 def safe_print(message):
     """Imprime un mensaje de forma segura"""
@@ -168,9 +168,12 @@ class TestIntegrationFlow:
 
     def test_full_lifecycle(self, driver, frontend_url):
         """Ejecuta el ciclo de vida completo"""
+        print("[INTEGRACIÓN] Iniciando test de ciclo de vida completo")
         print_step(f"INICIANDO FLUJO COMPLETO (Sufijo: {self.unique_suffix})")
         driver.get(frontend_url)
         wait_visual(1.0)
+        # ... (resto del flujo ya tiene safe_print y print_step)
+        print("[INTEGRACIÓN] Test de ciclo de vida completo finalizado")
 
         # ==========================================
         # FASE 1: CREACIÓN (Orden de Dependencia)

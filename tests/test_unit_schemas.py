@@ -2,77 +2,55 @@
 Pruebas unitarias para los esquemas de Pydantic
 """
 import pytest
-from datetime import datetime
 from backend import schemas
 from pydantic import ValidationError
 
-
 class TestEmpresaSchemas:
-    """Pruebas para los esquemas de Empresa"""
-    
     def test_empresa_create_valid(self):
-        """Prueba la creación de un esquema EmpresaCreate válido"""
-        empresa = schemas.EmpresaCreate(
-            nombre="Test Empresa",
-            nit="123456789",
-            activo=True
-        )
+        print("Probando creación de EmpresaCreate")
+        empresa = schemas.EmpresaCreate(nombre="Test Empresa", nit="123456789", activo=True)
+        print(f"EmpresaCreate: {empresa}")
         assert empresa.nombre == "Test Empresa"
         assert empresa.nit == "123456789"
         assert empresa.activo is True
-    
+
     def test_empresa_create_default_activo(self):
-        """Prueba que el valor por defecto de activo es True"""
+        print("Probando valor por defecto de activo en EmpresaCreate")
         empresa = schemas.EmpresaCreate(nombre="Test Empresa")
+        print(f"EmpresaCreate: {empresa}")
         assert empresa.activo is True
-    
+
     def test_empresa_create_missing_nombre(self):
-        """Prueba que se requiere el campo nombre"""
+        print("Probando error por falta de nombre en EmpresaCreate")
         with pytest.raises(ValidationError):
             schemas.EmpresaCreate(nit="123456789")
-    
+
     def test_empresa_update_partial(self):
-        """Prueba que EmpresaUpdate permite campos opcionales"""
+        print("Probando actualización parcial de EmpresaUpdate")
         empresa_update = schemas.EmpresaUpdate(nombre="Nuevo Nombre")
+        print(f"EmpresaUpdate: {empresa_update}")
         assert empresa_update.nombre == "Nuevo Nombre"
         assert empresa_update.nit is None
         assert empresa_update.activo is None
 
-
 class TestPersonaSchemas:
-    """Pruebas para los esquemas de Persona"""
-    
     def test_persona_create_valid(self):
-        """Prueba la creación de un esquema PersonaCreate válido"""
-        persona = schemas.PersonaCreate(
-            nombre="Juan",
-            apellido="Pérez",
-            documento="12345678",
-            email="juan@test.com",
-            telefono="3001234567",
-            activo=True
-        )
+        persona = schemas.PersonaCreate(nombre="Juan", apellido="Pérez", documento="12345678", email="juan@test.com", telefono="3001234567", activo=True)
         assert persona.nombre == "Juan"
         assert persona.apellido == "Pérez"
         assert persona.documento == "12345678"
         assert persona.email == "juan@test.com"
         assert persona.telefono == "3001234567"
         assert persona.activo is True
-    
+
     def test_persona_create_required_fields(self):
-        """Prueba que nombre y apellido son requeridos"""
         with pytest.raises(ValidationError):
             schemas.PersonaCreate(nombre="Juan")
-        
         with pytest.raises(ValidationError):
             schemas.PersonaCreate(apellido="Pérez")
 
-
 class TestSedeSchemas:
-    """Pruebas para los esquemas de Sede"""
-    
     def test_sede_create_valid(self):
-        """Prueba la creación de un esquema SedeCreate válido"""
         sede = schemas.SedeCreate(
             empresa_id=1,
             nombre="Sede Principal",

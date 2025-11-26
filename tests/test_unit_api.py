@@ -1,6 +1,16 @@
 """
-Pruebas unitarias para los endpoints de la API
+test_unit_api.py
+----------------
+Pruebas unitarias para los endpoints de la API (FastAPI).
+
+Cada clase agrupa pruebas para una entidad de la API.
+Cada método prueba un endpoint específico usando un cliente de pruebas.
+Incluye asserts y logs para reporte HTML.
 """
+
+# Cada clase Test*API agrupa pruebas para una entidad de la API.
+# Cada método test_* es una prueba individual para un endpoint o caso de uso.
+# Se usan fixtures de pytest para inyectar el cliente y datos de ejemplo.
 import pytest
 from fastapi import status
 
@@ -8,67 +18,62 @@ from fastapi import status
 @pytest.mark.unit
 class TestEmpresaAPI:
     """Pruebas para los endpoints de Empresa"""
-    
+
     def test_get_empresas_empty(self, client):
-        """Prueba obtener lista de empresas cuando está vacía"""
+        print("Probando obtener lista de empresas vacía")
         response = client.get("/api/empresas")
+        print(f"Respuesta: {response.json()}")
         assert response.status_code == status.HTTP_200_OK
         assert isinstance(response.json(), list)
-    
+
     def test_create_empresa(self, client, sample_empresa_data):
-        """Prueba crear una empresa"""
+        print("Probando crear empresa")
         response = client.post("/api/empresas", json=sample_empresa_data)
+        print(f"Respuesta: {response.json()}")
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert data["nombre"] == sample_empresa_data["nombre"]
         assert data["nit"] == sample_empresa_data["nit"]
         assert data["activo"] == sample_empresa_data["activo"]
         assert "id" in data
-    
+
     def test_get_empresa_by_id(self, client, sample_empresa_data):
-        """Prueba obtener una empresa por ID"""
-        # Crear empresa primero
+        print("Probando obtener empresa por ID")
         create_response = client.post("/api/empresas", json=sample_empresa_data)
         empresa_id = create_response.json()["id"]
-        
-        # Obtener empresa
         response = client.get(f"/api/empresas/{empresa_id}")
+        print(f"Respuesta: {response.json()}")
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert data["id"] == empresa_id
         assert data["nombre"] == sample_empresa_data["nombre"]
-    
+
     def test_get_empresa_not_found(self, client):
-        """Prueba obtener una empresa que no existe"""
+        print("Probando obtener empresa inexistente")
         response = client.get("/api/empresas/99999")
+        print(f"Respuesta: {response.status_code}")
         assert response.status_code == status.HTTP_404_NOT_FOUND
-    
+
     def test_update_empresa(self, client, sample_empresa_data):
-        """Prueba actualizar una empresa"""
-        # Crear empresa primero
+        print("Probando actualizar empresa")
         create_response = client.post("/api/empresas", json=sample_empresa_data)
         empresa_id = create_response.json()["id"]
-        
-        # Actualizar empresa
         update_data = {"nombre": "Empresa Actualizada"}
         response = client.put(f"/api/empresas/{empresa_id}", json=update_data)
+        print(f"Respuesta: {response.json()}")
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert data["nombre"] == "Empresa Actualizada"
-        assert data["nit"] == sample_empresa_data["nit"]  # No cambió
-    
+        assert data["nit"] == sample_empresa_data["nit"]
+
     def test_delete_empresa(self, client, sample_empresa_data):
-        """Prueba eliminar una empresa"""
-        # Crear empresa primero
+        print("Probando eliminar empresa")
         create_response = client.post("/api/empresas", json=sample_empresa_data)
         empresa_id = create_response.json()["id"]
-        
-        # Eliminar empresa
         response = client.delete(f"/api/empresas/{empresa_id}")
+        print(f"Respuesta: {response.json()}")
         assert response.status_code == status.HTTP_200_OK
         assert response.json()["message"] == "Empresa eliminada"
-        
-        # Verificar que fue eliminada
         get_response = client.get(f"/api/empresas/{empresa_id}")
         assert get_response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -76,9 +81,50 @@ class TestEmpresaAPI:
 @pytest.mark.unit
 class TestPersonaAPI:
     """Pruebas para los endpoints de Persona"""
-    
+
     def test_create_persona(self, client, sample_persona_data):
-        """Prueba crear una persona"""
+        response = client.post("/api/personas", json=sample_persona_data)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["nombre"] == sample_persona_data["nombre"]
+        assert data["apellido"] == sample_persona_data["apellido"]
+        assert data["documento"] == sample_persona_data["documento"]
+        assert data["email"] == sample_persona_data["email"]
+        assert data["telefono"] == sample_persona_data["telefono"]
+        assert data["activo"] == sample_persona_data["activo"]
+        assert "id" in data
+
+    def test_get_persona_by_id(self, client, sample_persona_data):
+        create_response = client.post("/api/personas", json=sample_persona_data)
+        persona_id = create_response.json()["id"]
+        response = client.get(f"/api/personas/{persona_id}")
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["id"] == persona_id
+        assert data["nombre"] == sample_persona_data["nombre"]
+
+    def test_get_persona_not_found(self, client):
+        response = client.get("/api/personas/99999")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_update_persona(self, client, sample_persona_data):
+        create_response = client.post("/api/personas", json=sample_persona_data)
+        persona_id = create_response.json()["id"]
+        update_data = {"nombre": "Persona Actualizada"}
+        response = client.put(f"/api/personas/{persona_id}", json=update_data)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["nombre"] == "Persona Actualizada"
+        assert data["apellido"] == sample_persona_data["apellido"]
+
+    def test_delete_persona(self, client, sample_persona_data):
+        create_response = client.post("/api/personas", json=sample_persona_data)
+        persona_id = create_response.json()["id"]
+        response = client.delete(f"/api/personas/{persona_id}")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()["message"] == "Persona eliminada"
+        get_response = client.get(f"/api/personas/{persona_id}")
+        assert get_response.status_code == status.HTTP_404_NOT_FOUND
         response = client.post("/api/personas", json=sample_persona_data)
         assert response.status_code == status.HTTP_200_OK
         data = response.json()

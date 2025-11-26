@@ -1,0 +1,301 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.0.1, pluggy-1.6.0 -- C:\Users\Juan Forero\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26100-SP0', 'Packages': {'pytest': '9.0.1', 'pluggy': '1.6.0'}, 'Plugins': {'anyio': '4.11.0', 'html': '4.1.1', 'metadata': '3.1.1'}}
+rootdir: C:\Users\Juan Forero\Desktop\hidroponico_pruebas\tests
+configfile: pytest.ini
+plugins: anyio-4.11.0, html-4.1.1, metadata-3.1.1
+collecting ... collected 56 items
+
+tests\test_integration_flow.py::TestIntegrationFlow::test_full_lifecycle PASSED [  1%]
+tests\test_unit_api.py::TestEmpresaAPI::test_get_empresas_empty PASSED   [  3%]
+tests\test_unit_api.py::TestEmpresaAPI::test_create_empresa PASSED       [  5%]
+tests\test_unit_api.py::TestEmpresaAPI::test_get_empresa_by_id PASSED    [  7%]
+tests\test_unit_api.py::TestEmpresaAPI::test_get_empresa_not_found PASSED [  8%]
+tests\test_unit_api.py::TestEmpresaAPI::test_update_empresa PASSED       [ 10%]
+tests\test_unit_api.py::TestEmpresaAPI::test_delete_empresa PASSED       [ 12%]
+tests\test_unit_api.py::TestPersonaAPI::test_create_persona PASSED       [ 14%]
+tests\test_unit_api.py::TestPersonaAPI::test_get_persona_by_id PASSED    [ 16%]
+tests\test_unit_api.py::TestPersonaAPI::test_get_persona_not_found PASSED [ 17%]
+tests\test_unit_api.py::TestPersonaAPI::test_update_persona PASSED       [ 19%]
+tests\test_unit_api.py::TestPersonaAPI::test_delete_persona PASSED       [ 21%]
+tests\test_unit_api.py::TestPersonaAPI::test_get_personas PASSED         [ 23%]
+tests\test_unit_api.py::TestTipoCultivoAPI::test_create_tipo_cultivo PASSED [ 25%]
+tests\test_unit_api.py::TestTipoCultivoAPI::test_get_tipo_cultivo_by_id PASSED [ 26%]
+tests\test_unit_api.py::TestNutrienteAPI::test_create_nutriente PASSED   [ 28%]
+tests\test_unit_api.py::TestNutrienteAPI::test_get_nutrientes PASSED     [ 30%]
+tests\test_unit_api.py::TestRootEndpoint::test_root_endpoint PASSED      [ 32%]
+tests\test_unit_api.py::TestAPIValidation::test_create_empresa_missing_required_field PASSED [ 33%]
+tests\test_unit_api.py::TestAPIValidation::test_create_persona_missing_required_fields PASSED [ 35%]
+tests\test_unit_api.py::TestAPIValidation::test_update_nonexistent_empresa PASSED [ 37%]
+tests\test_unit_api.py::TestAPIValidation::test_delete_nonexistent_empresa PASSED [ 39%]
+tests\test_unit_models.py::TestEmpresaModel::test_empresa_creation PASSED [ 41%]
+tests\test_unit_models.py::TestEmpresaModel::test_empresa_default_activo PASSED [ 42%]
+tests\test_unit_models.py::TestPersonaModel::test_persona_creation PASSED [ 44%]
+tests\test_unit_models.py::TestPersonaModel::test_persona_default_activo PASSED [ 46%]
+tests\test_unit_models.py::TestSedeModel::test_sede_creation PASSED      [ 48%]
+tests\test_unit_models.py::TestBloqueModel::test_bloque_creation PASSED  [ 50%]
+tests\test_unit_models.py::TestTipoEspacioModel::test_tipo_espacio_creation PASSED [ 51%]
+tests\test_unit_models.py::TestEspacioModel::test_espacio_creation PASSED [ 53%]
+tests\test_unit_models.py::TestUsuarioModel::test_usuario_creation PASSED [ 55%]
+tests\test_unit_models.py::TestUsuarioModel::test_usuario_default_auto_registro PASSED [ 57%]
+tests\test_unit_models.py::TestRolModel::test_rol_creation PASSED        [ 58%]
+tests\test_unit_models.py::TestTipoCultivoModel::test_tipo_cultivo_creation PASSED [ 60%]
+tests\test_unit_models.py::TestCultivoModel::test_cultivo_creation PASSED [ 62%]
+tests\test_unit_models.py::TestNutrienteModel::test_nutriente_creation PASSED [ 64%]
+tests\test_unit_models.py::TestFaseProduccionModel::test_fase_produccion_creation PASSED [ 66%]
+tests\test_unit_models.py::TestVariedadCultivoModel::test_variedad_cultivo_creation PASSED [ 67%]
+tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_create_valid PASSED [ 69%]
+tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_create_default_activo PASSED [ 71%]
+tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_create_missing_nombre PASSED [ 73%]
+tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_update_partial PASSED [ 75%]
+tests\test_unit_schemas.py::TestPersonaSchemas::test_persona_create_valid PASSED [ 76%]
+tests\test_unit_schemas.py::TestPersonaSchemas::test_persona_create_required_fields PASSED [ 78%]
+tests\test_unit_schemas.py::TestSedeSchemas::test_sede_create_valid PASSED [ 80%]
+tests\test_unit_schemas.py::TestSedeSchemas::test_sede_create_required_fields PASSED [ 82%]
+tests\test_unit_schemas.py::TestTipoCultivoSchemas::test_tipo_cultivo_create_valid PASSED [ 83%]
+tests\test_unit_schemas.py::TestTipoCultivoSchemas::test_tipo_cultivo_create_required_nombre PASSED [ 85%]
+tests\test_unit_schemas.py::TestNutrienteSchemas::test_nutriente_create_valid PASSED [ 87%]
+tests\test_unit_schemas.py::TestNutrienteSchemas::test_nutriente_create_required_nombre PASSED [ 89%]
+tests\test_unit_schemas.py::TestCultivoSchemas::test_cultivo_create_valid PASSED [ 91%]
+tests\test_unit_schemas.py::TestCultivoSchemas::test_cultivo_create_required_fields PASSED [ 92%]
+tests\test_unit_schemas.py::TestUsuarioSchemas::test_usuario_create_valid PASSED [ 94%]
+tests\test_unit_schemas.py::TestUsuarioSchemas::test_usuario_create_required_fields PASSED [ 96%]
+tests\test_unit_schemas.py::TestRolSchemas::test_rol_create_valid PASSED [ 98%]
+tests\test_unit_schemas.py::TestRolSchemas::test_rol_create_required_nombre PASSED [100%]
+
+=================================== PASSES ====================================
+___________________ TestIntegrationFlow.test_full_lifecycle ___________________
+---------------------------- Captured stdout setup ----------------------------
+
+============================================================
+  Inicializando navegador Chrome
+============================================================
+---------------------------- Captured stdout call -----------------------------
+[INTEGRACIÓN] Iniciando test de ciclo de vida completo
+
+============================================================
+  INICIANDO FLUJO COMPLETO (Sufijo: eabf5a)
+============================================================
+[INTEGRACIÓN] Test de ciclo de vida completo finalizado
+
+============================================================
+  FASE 1: CREACIÓN DE ENTIDADES
+============================================================
+  [+] Empresa creada
+  [+] Persona creada (ID: 71)
+  [+] Tipo Cultivo creado
+  [+] Nutriente creado
+  [+] Rol creado
+  [+] Tipo Espacio creado
+  [+] Fase Producción creada
+  [+] Tipo Estructura creado
+  [+] Usuario creado
+  [+] Sede creada
+  [+] Bloque creado
+  [+] Espacio creado
+  [+] Estructura creada
+  [+] Cultivo creado
+  [+] Variedad Cultivo creada
+  [+] Cultivo Fase creado
+  [+] Fase Nutriente creada
+  [+] Metodo Acceso creado
+  [+] Usuario Rol creado
+  [+] Acceso Espacio creado
+
+============================================================
+  FASE 1 COMPLETADA: Todas las entidades creadas.
+============================================================
+
+============================================================
+  FASE 2: ACTUALIZACIÓN DE ENTIDADES
+============================================================
+  [*] accesos-espacio actualizado
+  [*] metodos-acceso actualizado
+  [*] fases-nutriente actualizado
+  [*] cultivos-fases actualizado
+  [*] variedades-cultivo actualizado
+  [*] cultivos actualizado
+  [*] estructuras actualizado
+  [*] espacios actualizado
+  [*] bloques actualizado
+  [*] sedes actualizado
+  [*] usuarios actualizado
+  [*] tipos-estructura actualizado
+  [*] fases-produccion actualizado
+  [*] tipos-espacio actualizado
+  [*] roles actualizado
+  [*] nutrientes actualizado
+  [*] tipos-cultivo actualizado
+  [*] personas actualizado
+  [*] empresas actualizado
+
+============================================================
+  FASE 2 COMPLETADA: Todas las entidades actualizadas.
+============================================================
+
+============================================================
+  FASE 3: ELIMINACIÓN DE ENTIDADES (Orden Inverso)
+============================================================
+  [-] accesos-espacio eliminado
+  [-] usuarios-roles eliminado
+  [-] metodos-acceso eliminado
+  [-] fases-nutriente eliminado
+  [-] cultivos-fases eliminado
+  [-] variedades-cultivo eliminado
+  [-] cultivos eliminado
+  [-] estructuras eliminado
+  [-] espacios eliminado
+  [-] bloques eliminado
+  [-] sedes eliminado
+  [-] usuarios eliminado
+  [-] tipos-estructura eliminado
+  [-] fases-produccion eliminado
+  [-] tipos-espacio eliminado
+  [-] roles eliminado
+  [-] nutrientes eliminado
+  [-] tipos-cultivo eliminado
+  [-] personas eliminado
+  [-] empresas eliminado
+
+============================================================
+  FASE 3 COMPLETADA: Todas las entidades eliminadas.
+============================================================
+
+============================================================
+  PRUEBA DE CICLO DE VIDA COMPLETA Y EXITOSA
+============================================================
+-------------------------- Captured stdout teardown ---------------------------
+
+============================================================
+  Cerrando navegador
+============================================================
+___________________ TestEmpresaAPI.test_get_empresas_empty ____________________
+---------------------------- Captured stdout call -----------------------------
+Probando obtener lista de empresas vacía
+Respuesta: [{'nombre': 'EmpUpd 992dca', 'nit': 'TEST6157e05d', 'activo': True, 'id': 87}, {'nombre': 'Empresa de Prueba a18ad208', 'nit': 'TESTa18ad208', 'activo': True, 'id': 92}, {'nombre': 'Empresa de Prueba a179120e', 'nit': 'TESTa179120e', 'activo': True, 'id': 93}, {'nombre': 'Empresa Actualizada', 'nit': 'TEST3bf91902', 'activo': True, 'id': 94}, {'nombre': 'Empresa e6ee30', 'nit': 'NIT-e6ee30', 'activo': True, 'id': 96}, {'nombre': 'Empresa eabf5a', 'nit': 'NIT-eabf5a', 'activo': True, 'id': 97}, {'nombre': 'EmpUpd eabf5a', 'nit': 'TEST4d0b036e', 'activo': True, 'id': 89}]
+_____________________ TestEmpresaAPI.test_create_empresa ______________________
+---------------------------- Captured stdout call -----------------------------
+Probando crear empresa
+Respuesta: {'nombre': 'Empresa de Prueba 208fd118', 'nit': 'TEST208fd118', 'activo': True, 'id': 98}
+____________________ TestEmpresaAPI.test_get_empresa_by_id ____________________
+---------------------------- Captured stdout call -----------------------------
+Probando obtener empresa por ID
+Respuesta: {'nombre': 'Empresa de Prueba 1c47d474', 'nit': 'TEST1c47d474', 'activo': True, 'id': 99}
+__________________ TestEmpresaAPI.test_get_empresa_not_found __________________
+---------------------------- Captured stdout call -----------------------------
+Probando obtener empresa inexistente
+Respuesta: 404
+_____________________ TestEmpresaAPI.test_update_empresa ______________________
+---------------------------- Captured stdout call -----------------------------
+Probando actualizar empresa
+Respuesta: {'nombre': 'Empresa Actualizada', 'nit': 'TEST66a76a36', 'activo': True, 'id': 100}
+_____________________ TestEmpresaAPI.test_delete_empresa ______________________
+---------------------------- Captured stdout call -----------------------------
+Probando eliminar empresa
+Respuesta: {'message': 'Empresa eliminada'}
+___________________ TestEmpresaModel.test_empresa_creation ____________________
+---------------------------- Captured stdout call -----------------------------
+Probando creación de Empresa
+Empresa: <backend.models.Empresa object at 0x000001F4B7A9D8B0>
+________________ TestEmpresaModel.test_empresa_default_activo _________________
+---------------------------- Captured stdout call -----------------------------
+Probando valor por defecto de activo en Empresa
+Empresa: <backend.models.Empresa object at 0x000001F4B770E990>
+___________________ TestPersonaModel.test_persona_creation ____________________
+---------------------------- Captured stdout call -----------------------------
+Probando creación de Persona
+Persona: <backend.models.Persona object at 0x000001F4B79D7890>
+________________ TestPersonaModel.test_persona_default_activo _________________
+---------------------------- Captured stdout call -----------------------------
+Probando valor por defecto de activo en Persona
+Persona: <backend.models.Persona object at 0x000001F4B79D4A50>
+______________________ TestSedeModel.test_sede_creation _______________________
+---------------------------- Captured stdout call -----------------------------
+Probando creación de Sede
+Sede: <backend.models.Sede object at 0x000001F4B78186E0>
+________________ TestEmpresaSchemas.test_empresa_create_valid _________________
+---------------------------- Captured stdout call -----------------------------
+Probando creación de EmpresaCreate
+EmpresaCreate: nombre='Test Empresa' nit='123456789' activo=True
+____________ TestEmpresaSchemas.test_empresa_create_default_activo ____________
+---------------------------- Captured stdout call -----------------------------
+Probando valor por defecto de activo en EmpresaCreate
+EmpresaCreate: nombre='Test Empresa' nit=None activo=True
+____________ TestEmpresaSchemas.test_empresa_create_missing_nombre ____________
+---------------------------- Captured stdout call -----------------------------
+Probando error por falta de nombre en EmpresaCreate
+_______________ TestEmpresaSchemas.test_empresa_update_partial ________________
+---------------------------- Captured stdout call -----------------------------
+Probando actualización parcial de EmpresaUpdate
+EmpresaUpdate: nombre='Nuevo Nombre' nit=None activo=None
+============================ slowest 10 durations =============================
+270.79s call     test_integration_flow.py::TestIntegrationFlow::test_full_lifecycle
+4.71s setup    test_integration_flow.py::TestIntegrationFlow::test_full_lifecycle
+2.53s teardown test_integration_flow.py::TestIntegrationFlow::test_full_lifecycle
+0.18s call     test_unit_api.py::TestEmpresaAPI::test_get_empresas_empty
+0.09s call     test_unit_api.py::TestPersonaAPI::test_delete_persona
+0.09s call     test_unit_api.py::TestEmpresaAPI::test_delete_empresa
+0.07s call     test_unit_api.py::TestPersonaAPI::test_get_persona_by_id
+0.07s call     test_unit_api.py::TestTipoCultivoAPI::test_create_tipo_cultivo
+0.07s call     test_unit_api.py::TestTipoCultivoAPI::test_get_tipo_cultivo_by_id
+0.07s call     test_unit_api.py::TestPersonaAPI::test_update_persona
+- Generated html report: file:///C:/Users/Juan%20Forero/Desktop/hidroponico_pruebas/resultados/report_all_tests.html -
+=========================== short test summary info ===========================
+PASSED tests\test_integration_flow.py::TestIntegrationFlow::test_full_lifecycle
+PASSED tests\test_unit_api.py::TestEmpresaAPI::test_get_empresas_empty
+PASSED tests\test_unit_api.py::TestEmpresaAPI::test_create_empresa
+PASSED tests\test_unit_api.py::TestEmpresaAPI::test_get_empresa_by_id
+PASSED tests\test_unit_api.py::TestEmpresaAPI::test_get_empresa_not_found
+PASSED tests\test_unit_api.py::TestEmpresaAPI::test_update_empresa
+PASSED tests\test_unit_api.py::TestEmpresaAPI::test_delete_empresa
+PASSED tests\test_unit_api.py::TestPersonaAPI::test_create_persona
+PASSED tests\test_unit_api.py::TestPersonaAPI::test_get_persona_by_id
+PASSED tests\test_unit_api.py::TestPersonaAPI::test_get_persona_not_found
+PASSED tests\test_unit_api.py::TestPersonaAPI::test_update_persona
+PASSED tests\test_unit_api.py::TestPersonaAPI::test_delete_persona
+PASSED tests\test_unit_api.py::TestPersonaAPI::test_get_personas
+PASSED tests\test_unit_api.py::TestTipoCultivoAPI::test_create_tipo_cultivo
+PASSED tests\test_unit_api.py::TestTipoCultivoAPI::test_get_tipo_cultivo_by_id
+PASSED tests\test_unit_api.py::TestNutrienteAPI::test_create_nutriente
+PASSED tests\test_unit_api.py::TestNutrienteAPI::test_get_nutrientes
+PASSED tests\test_unit_api.py::TestRootEndpoint::test_root_endpoint
+PASSED tests\test_unit_api.py::TestAPIValidation::test_create_empresa_missing_required_field
+PASSED tests\test_unit_api.py::TestAPIValidation::test_create_persona_missing_required_fields
+PASSED tests\test_unit_api.py::TestAPIValidation::test_update_nonexistent_empresa
+PASSED tests\test_unit_api.py::TestAPIValidation::test_delete_nonexistent_empresa
+PASSED tests\test_unit_models.py::TestEmpresaModel::test_empresa_creation
+PASSED tests\test_unit_models.py::TestEmpresaModel::test_empresa_default_activo
+PASSED tests\test_unit_models.py::TestPersonaModel::test_persona_creation
+PASSED tests\test_unit_models.py::TestPersonaModel::test_persona_default_activo
+PASSED tests\test_unit_models.py::TestSedeModel::test_sede_creation
+PASSED tests\test_unit_models.py::TestBloqueModel::test_bloque_creation
+PASSED tests\test_unit_models.py::TestTipoEspacioModel::test_tipo_espacio_creation
+PASSED tests\test_unit_models.py::TestEspacioModel::test_espacio_creation
+PASSED tests\test_unit_models.py::TestUsuarioModel::test_usuario_creation
+PASSED tests\test_unit_models.py::TestUsuarioModel::test_usuario_default_auto_registro
+PASSED tests\test_unit_models.py::TestRolModel::test_rol_creation
+PASSED tests\test_unit_models.py::TestTipoCultivoModel::test_tipo_cultivo_creation
+PASSED tests\test_unit_models.py::TestCultivoModel::test_cultivo_creation
+PASSED tests\test_unit_models.py::TestNutrienteModel::test_nutriente_creation
+PASSED tests\test_unit_models.py::TestFaseProduccionModel::test_fase_produccion_creation
+PASSED tests\test_unit_models.py::TestVariedadCultivoModel::test_variedad_cultivo_creation
+PASSED tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_create_valid
+PASSED tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_create_default_activo
+PASSED tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_create_missing_nombre
+PASSED tests\test_unit_schemas.py::TestEmpresaSchemas::test_empresa_update_partial
+PASSED tests\test_unit_schemas.py::TestPersonaSchemas::test_persona_create_valid
+PASSED tests\test_unit_schemas.py::TestPersonaSchemas::test_persona_create_required_fields
+PASSED tests\test_unit_schemas.py::TestSedeSchemas::test_sede_create_valid
+PASSED tests\test_unit_schemas.py::TestSedeSchemas::test_sede_create_required_fields
+PASSED tests\test_unit_schemas.py::TestTipoCultivoSchemas::test_tipo_cultivo_create_valid
+PASSED tests\test_unit_schemas.py::TestTipoCultivoSchemas::test_tipo_cultivo_create_required_nombre
+PASSED tests\test_unit_schemas.py::TestNutrienteSchemas::test_nutriente_create_valid
+PASSED tests\test_unit_schemas.py::TestNutrienteSchemas::test_nutriente_create_required_nombre
+PASSED tests\test_unit_schemas.py::TestCultivoSchemas::test_cultivo_create_valid
+PASSED tests\test_unit_schemas.py::TestCultivoSchemas::test_cultivo_create_required_fields
+PASSED tests\test_unit_schemas.py::TestUsuarioSchemas::test_usuario_create_valid
+PASSED tests\test_unit_schemas.py::TestUsuarioSchemas::test_usuario_create_required_fields
+PASSED tests\test_unit_schemas.py::TestRolSchemas::test_rol_create_valid
+PASSED tests\test_unit_schemas.py::TestRolSchemas::test_rol_create_required_nombre
+================= 56 passed, 39 warnings in 279.96s (0:04:39) =================

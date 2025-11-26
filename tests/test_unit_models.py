@@ -2,83 +2,57 @@
 Pruebas unitarias para los modelos de SQLAlchemy
 """
 import pytest
-from datetime import datetime
 from backend.models import (
-    Empresa, Persona, Sede, Bloque, TipoEspacio, Espacio,
-    TipoEstructura, Estructura, Usuario, Rol, UsuarioRol,
-    MetodoAcceso, AccesoEspacio, TipoCultivo, Cultivo,
-    VariedadCultivo, FaseProduccion, CultivoFase, Nutriente, FaseNutriente
+    Empresa, Persona, Sede, Bloque, TipoEspacio, Espacio, Usuario, Rol, TipoCultivo, Cultivo, Nutriente, FaseProduccion, VariedadCultivo
 )
 
-
 class TestEmpresaModel:
-    """Pruebas para el modelo Empresa"""
-    
     def test_empresa_creation(self):
-        """Prueba la creación de una empresa"""
-        empresa = Empresa(
-            nombre="Test Empresa",
-            nit="987654321",
-            activo=True
-        )
+        print("Probando creación de Empresa")
+        empresa = Empresa(nombre="Test Empresa", nit="987654321", activo=True)
+        print(f"Empresa: {empresa}")
         assert empresa.nombre == "Test Empresa"
         assert empresa.nit == "987654321"
         assert empresa.activo is True
-        assert empresa.id is None  # Aún no se ha guardado
-    
+        assert empresa.id is None
+
     def test_empresa_default_activo(self):
-        """Prueba que el valor por defecto de activo puede ser establecido"""
-        # Los valores por defecto en SQLAlchemy se aplican al guardar en BD
-        # Al instanciar, el valor puede ser None hasta que se guarde
+        print("Probando valor por defecto de activo en Empresa")
         empresa = Empresa(nombre="Test Empresa")
-        # Verificamos que se puede establecer el valor por defecto
         empresa.activo = True
+        print(f"Empresa: {empresa}")
         assert empresa.activo is True
 
-
 class TestPersonaModel:
-    """Pruebas para el modelo Persona"""
-    
     def test_persona_creation(self):
-        """Prueba la creación de una persona"""
-        persona = Persona(
-            nombre="María",
-            apellido="González",
-            documento="87654321",
-            email="maria@test.com",
-            telefono="3009876543",
-            activo=True
-        )
+        print("Probando creación de Persona")
+        persona = Persona(nombre="María", apellido="González", documento="87654321", email="maria@test.com", telefono="3009876543", activo=True)
+        print(f"Persona: {persona}")
         assert persona.nombre == "María"
         assert persona.apellido == "González"
         assert persona.documento == "87654321"
         assert persona.email == "maria@test.com"
         assert persona.telefono == "3009876543"
         assert persona.activo is True
-    
+
     def test_persona_default_activo(self):
-        """Prueba que el valor por defecto de activo puede ser establecido"""
-        # Los valores por defecto en SQLAlchemy se aplican al guardar en BD
-        # Al instanciar, el valor puede ser None hasta que se guarde
+        print("Probando valor por defecto de activo en Persona")
         persona = Persona(nombre="Test", apellido="User")
-        # Verificamos que se puede establecer el valor por defecto
         persona.activo = True
+        print(f"Persona: {persona}")
         assert persona.activo is True
 
-
 class TestSedeModel:
-    """Pruebas para el modelo Sede"""
-    
     def test_sede_creation(self):
-        """Prueba la creación de una sede"""
-        sede = Sede(
-            empresa_id=1,
-            nombre="Sede Principal",
-            direccion="Calle 123",
-            latitud=4.6097,
-            longitud=-74.0817,
-            responsable_id=1
-        )
+        print("Probando creación de Sede")
+        sede = Sede(empresa_id=1, nombre="Sede Principal", direccion="Calle 123", latitud=4.6097, longitud=-74.0817, responsable_id=1)
+        print(f"Sede: {sede}")
+        assert sede.empresa_id == 1
+        assert sede.nombre == "Sede Principal"
+        assert sede.direccion == "Calle 123"
+        assert sede.latitud == 4.6097
+        assert sede.longitud == -74.0817
+        assert sede.responsable_id == 1
         assert sede.empresa_id == 1
         assert sede.nombre == "Sede Principal"
         assert sede.direccion == "Calle 123"

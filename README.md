@@ -201,9 +201,10 @@ Las variables de entorno se configuran en `docker-compose.yml`:
 - Verifica que los campos requeridos estén completos
 - Revisa las foreign keys (deben existir los registros relacionados)
 
-## 🧪 Pruebas Automatizadas
 
-El proyecto incluye pruebas automatizadas usando pytest y Selenium:
+## 🧪 Pruebas Automatizadas y Reportes
+
+El proyecto incluye pruebas automatizadas usando pytest y Selenium, y genera reportes tanto en HTML como en TXT para facilitar la revisión de resultados.
 
 ### Pruebas Unitarias
 
@@ -213,12 +214,59 @@ El proyecto incluye pruebas automatizadas usando pytest y Selenium:
 
 ### Pruebas de Integración
 
-- **Selenium** (`test_integration_selenium.py`): Pruebas end-to-end del frontend
+- **Selenium** (`test_integration_flow.py`): Pruebas end-to-end del frontend
 
-### Ejecutar Pruebas
+### Ejecución y Reportes Paso a Paso
+
+1. **Ejecutar todas las pruebas y generar reportes**
+
+	Ejecuta el siguiente script para correr todas las pruebas y generar automáticamente:
+	- Un reporte HTML visual e interactivo
+	- Un reporte TXT detallado con toda la salida de pytest
+
+	```bash
+	python run_tests_with_txt.py
+	```
+
+	Esto creará ambos archivos en la carpeta `resultados/`:
+	- `resultados/report_all_tests.html`
+	- `resultados/report_all_tests.txt`
+
+2. **Visualizar el reporte HTML**
+
+	- Abre el archivo `resultados/report_all_tests.html` en tu navegador.
+	- Asegúrate de que la URL termine con `?sort=result` para ver los resultados ordenados por estado. El archivo ya está configurado para redirigirte automáticamente si lo abres sin ese parámetro.
+	- Ejemplo de URL local:
+	  ```
+	  file:///C:/Users/Juan%20Forero/Desktop/hidroponico_pruebas/resultados/report_all_tests.html?sort=result
+	  ```
+	- El reporte HTML muestra:
+	  - Estado de cada prueba (Passed, Failed, Skipped, etc)
+	  - Logs y salidas de cada test
+	  - Filtros y orden dinámico
+	  - Resumen de ejecución y tiempos
+
+3. **Visualizar el reporte TXT**
+
+	- Abre el archivo `resultados/report_all_tests.txt` con cualquier editor de texto.
+	- Este archivo contiene toda la salida detallada de pytest, incluyendo:
+	  - Resultados de cada test
+	  - Tracebacks completos
+	  - Resúmenes de fallos, advertencias y tests lentos
+
+4. **Conservar históricos de reportes**
+
+	- Puedes copiar o renombrar los archivos de la carpeta `resultados/` si deseas conservar reportes de diferentes ejecuciones.
+
+5. **Más información**
+
+	- Consulta `resultados/README.md` para una guía rápida sobre la visualización del reporte HTML.
+	- Para detalles sobre las pruebas, revisa `tests/READMEtest.md`.
+
+### Comandos adicionales
 
 ```bash
-# Todas las pruebas
+# Todas las pruebas (sin reporte especial)
 pytest tests/
 
 # Solo pruebas unitarias
@@ -231,7 +279,9 @@ pytest tests/ -m integration
 pytest tests/ --cov=backend --cov-report=html
 ```
 
-Para más información, consulta `tests/README.md`.
+---
+
+Si tienes dudas sobre cómo interpretar los reportes, consulta con el equipo de pruebas o revisa la documentación de [pytest-html](https://pypi.org/project/pytest-html/).
 
 ## 📄 Licencia
 
