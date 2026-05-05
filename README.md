@@ -1,288 +1,247 @@
-# Sistema Hidropónico - Base de Datos y API
+# Sistema Hidropónico — Backend + suite de pruebas automatizadas
 
-Sistema completo de gestión para un proyecto hidropónico, con base de datos PostgreSQL, API REST (FastAPI) y frontend web.
+[![Python](https://img.shields.io/badge/Python-3.11-3670A0?style=flat-square&logo=python&logoColor=ffdd54)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?style=flat-square)](https://www.sqlalchemy.org/)
+[![Pytest](https://img.shields.io/badge/Pytest-7.4-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](https://pytest.org/)
+[![Selenium](https://img.shields.io/badge/Selenium-4.15-43B02A?style=flat-square&logo=selenium&logoColor=white)](https://www.selenium.dev/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
-## 📋 Requisitos
+API REST y frontend para gestión de un sistema hidropónico, **con foco en la suite de pruebas automatizadas**: unit tests sobre modelos SQLAlchemy, schemas Pydantic y endpoints FastAPI; integration tests end-to-end con Selenium; cobertura con `pytest-cov` y reportes HTML/TXT para revisión.
 
-- Docker
-- Docker Compose
+> Proyecto académico de la materia de **Pruebas de Software** en la Universidad Surcolombiana (USCO). El énfasis no está en la lógica de hidroponía, sino en la **estrategia de testing**: cómo cubrir un sistema fullstack con pruebas reproducibles, dockerizadas y reportadas.
 
-## 🚀 Inicio Rápido
+---
 
-### 1. Iniciar todos los servicios
+## Highlights de testing
+
+- **Tres niveles de pruebas unitarias**, una por capa: `models` (ORM), `schemas` (validación Pydantic), `api` (endpoints FastAPI con `TestClient`).
+- **Integración end-to-end con Selenium** sobre el frontend HTML/JS, cubriendo el flujo real usuario → API → base de datos.
+- **Cobertura con `pytest-cov`** apuntada al paquete `backend/`.
+- **Reportes en dos formatos** (`pytest-html` + dump TXT) para entrega y revisión académica.
+- **Marcadores `pytest`** (`-m unit`, `-m integration`) para correr subconjuntos según el contexto (CI rápido vs validación completa).
+- **Stack reproducible** con Docker Compose: PostgreSQL + Python + Backend en contenedores con health checks.
+
+## Tech stack
+
+| Capa | Tecnología |
+|---|---|
+| API | FastAPI 0.104 + Uvicorn |
+| ORM | SQLAlchemy 2.0 |
+| Validación | Pydantic 2.5 |
+| Base de datos | PostgreSQL 15 (Alpine) |
+| Frontend | HTML / CSS / JavaScript (vanilla) |
+| Tests unit | pytest, pytest-asyncio, httpx |
+| Tests integración | Selenium 4 + WebDriver Manager |
+| Cobertura | pytest-cov |
+| Reportes | pytest-html |
+| Contenerización | Docker + Docker Compose |
+
+---
+
+## Arquitectura
+
+```
+┌──────────────────────────────────────────────┐
+│  Frontend (HTML/JS)                          │
+│  - Llama a /api/* del backend                │
+└──────────────────────────────────────────────┘
+                  ↓ HTTP (CORS *)
+┌──────────────────────────────────────────────┐
+│  Backend FastAPI                             │
+│  - Endpoints CRUD                            │
+│  - Schemas Pydantic                          │
+│  - SQLAlchemy ORM                            │
+└──────────────────────────────────────────────┘
+                  ↓ SQL
+┌──────────────────────────────────────────────┐
+│  PostgreSQL 15                               │
+│  - Schema cargado desde JSON.json            │
+│  - init.sql inicializa estructura            │
+└──────────────────────────────────────────────┘
+```
+
+### Modelo de datos
+
+Entidades principales: `Empresa`, `Sede`, `Persona`, `Usuario`, y entidades del dominio hidropónico cargadas desde `JSON.json` mediante `create_database.py`.
+
+---
+
+## Quick start
+
+### Requisitos
+
+- Docker + Docker Compose
+- Python 3.11+ (solo si vas a correr pruebas fuera de Docker)
+- Chrome (para los tests de integración Selenium)
+
+### 1. Configurar variables de entorno
+
+```bash
+cp .env.example .env
+# Editar .env con tus credenciales — DB_PASSWORD es obligatorio
+```
+
+### 2. Levantar la stack
 
 ```bash
 docker-compose up -d
 ```
 
-Esto iniciará:
-- **PostgreSQL** en el puerto 5437
-- **Python** (para scripts de base de datos)
-- **Backend FastAPI** en el puerto 8000
+Esto inicia tres contenedores:
 
-### 2. Crear la base de datos desde JSON
+| Servicio | Container | Puerto host | Descripción |
+|---|---|---|---|
+| `postgres` | `hidroponico_db` | 5437 | PostgreSQL 15 con `init.sql` y healthcheck |
+| `python` | `hidroponico_python` | — | Contenedor para scripts (creación BD, tests) |
+| `backend` | `hidroponico_backend` | 8000 | API FastAPI con hot reload |
+
+### 3. Cargar la base de datos desde JSON
 
 ```bash
 docker-compose exec python python create_database.py
 ```
 
-### 3. Ejecutar pruebas de la base de datos
+### 4. Verificar
+
+- API: http://localhost:8000
+- Swagger UI: http://localhost:8000/docs
+- Frontend: abrir `frontend/index.html` en el navegador
+
+---
+
+## Testing
+
+### Marcadores
 
 ```bash
-docker-compose exec python python test_database.py
-```
-
-### 4. Ejecutar pruebas automatizadas
-
-```bash
-# Instalar dependencias de testing
-pip install -r requirements.txt
-
-# Ejecutar todas las pruebas
+# Todas las pruebas
 pytest tests/
 
-# Solo pruebas unitarias
+# Solo unit tests (rápido, sin browser)
 pytest tests/ -m unit
 
-# Solo pruebas de integración (requiere Chrome)
+# Solo integration tests (requiere Chrome corriendo)
 pytest tests/ -m integration
+
+# Cobertura sobre el paquete backend/
+pytest tests/ --cov=backend --cov-report=html
+# Reporte queda en htmlcov/index.html
 ```
 
-### 5. Acceder a la aplicación
+### Reportes con `run_tests_with_txt.py`
 
-- **Frontend**: Abre `frontend/index.html` en tu navegador
-- **API Backend**: http://localhost:8000
-- **Documentación API**: http://localhost:8000/docs
-- **PostgreSQL**: localhost:5437
+```bash
+python run_tests_with_txt.py
+```
 
-## 📁 Estructura del Proyecto
+Genera dos reportes en `resultados/`:
+
+- `report_all_tests.html` — Reporte interactivo con filtros por estado y logs por test (vía `pytest-html`).
+- `report_all_tests.txt` — Salida completa de pytest (tracebacks, resúmenes, warnings).
+
+### Estructura de pruebas
 
 ```
-.
+tests/
+├── conftest.py                   # Fixtures: client, sample data, db setup
+├── pytest.ini                    # Markers, paths
+├── test_unit_models.py           # SQLAlchemy: relaciones, defaults, constraints
+├── test_unit_schemas.py          # Pydantic: validación, serialización
+├── test_unit_api.py              # FastAPI: endpoints CRUD por entidad
+└── test_integration_flow.py      # Selenium: flujo usuario → UI → API → DB
+```
+
+### Por qué tres archivos de unit tests
+
+Separar por **capa** (no por entidad) permite identificar exactamente dónde está el fallo cuando algo se rompe:
+
+- Falla en `test_unit_models.py` → problema de schema BD o relaciones SQLAlchemy.
+- Falla en `test_unit_schemas.py` → problema de validación Pydantic.
+- Falla en `test_unit_api.py` → problema de routing, status codes o serialización.
+
+Esto reduce el tiempo de diagnóstico vs tener un archivo gigante por entidad mezclando capas.
+
+---
+
+## API endpoints
+
+API expuesta bajo `/api/`:
+
+- `GET /api/empresas` · `POST /api/empresas` · `GET /api/empresas/{id}` · etc.
+- Misma forma CRUD para `sedes`, `personas`, `usuarios` y demás entidades.
+
+Documentación interactiva auto-generada en http://localhost:8000/docs (Swagger UI).
+
+---
+
+## Estructura del proyecto
+
+```
+hidroponico_pruebas/
 ├── backend/
 │   ├── __init__.py
-│   ├── models.py          # Modelos SQLAlchemy
-│   ├── schemas.py         # Esquemas Pydantic
-│   ├── database.py        # Configuración de BD
-│   └── main.py            # API FastAPI
+│   ├── main.py            # App FastAPI, routes, CORS
+│   ├── models.py          # SQLAlchemy ORM
+│   ├── schemas.py         # Pydantic schemas
+│   └── database.py        # Engine, session, get_db dependency
 ├── frontend/
-│   ├── index.html         # Interfaz web
-│   ├── styles.css         # Estilos
-│   └── app.js             # Lógica JavaScript
-├── tests/                 # Pruebas automatizadas
-│   ├── conftest.py       # Configuración pytest
-│   ├── test_unit_*.py    # Pruebas unitarias
-│   └── test_integration_*.py  # Pruebas de integración
-├── JSON.json              # Modelo de base de datos
-├── create_database.py     # Script de creación de BD
-├── test_database.py       # Script de pruebas
-├── docker-compose.yml     # Configuración Docker
-├── Dockerfile             # Imagen Docker
-├── requirements.txt       # Dependencias Python
-└── README.md             # Este archivo
-```
-
-## 🔧 API Endpoints
-
-La API incluye endpoints CRUD para todas las entidades:
-
-- `/api/empresas`
-- `/api/personas`
-- `/api/sedes`
-- `/api/bloques`
-- `/api/tipos-espacio`
-- `/api/espacios`
-- `/api/tipos-estructura`
-- `/api/estructuras`
-- `/api/usuarios`
-- `/api/roles`
-- `/api/usuarios-roles`
-- `/api/metodos-acceso`
-- `/api/accesos-espacio`
-- `/api/tipos-cultivo`
-- `/api/cultivos`
-- `/api/variedades-cultivo`
-- `/api/fases-produccion`
-- `/api/cultivos-fases`
-- `/api/nutrientes`
-- `/api/fases-nutriente`
-
-Cada endpoint soporta:
-- `GET /api/{entidad}` - Listar todos
-- `GET /api/{entidad}/{id}` - Obtener uno
-- `POST /api/{entidad}` - Crear
-- `PUT /api/{entidad}/{id}` - Actualizar
-- `DELETE /api/{entidad}/{id}` - Eliminar
-
-## 🎨 Frontend
-
-El frontend es una aplicación web simple (HTML/CSS/JS) que permite:
-- Ver todas las entidades en tabs
-- Listar registros en tablas
-- Crear nuevos registros
-- Editar registros existentes
-- Eliminar registros
-
-**Nota**: Abre `frontend/index.html` directamente en tu navegador (no necesita servidor).
-
-## 🛠️ Comandos Útiles
-
-### Ver logs
-```bash
-docker-compose logs -f backend
-docker-compose logs -f postgres
-```
-
-### Reiniciar servicios
-```bash
-docker-compose restart backend
-```
-
-### Detener todo
-```bash
-docker-compose down
-```
-
-### Eliminar todo (incluyendo volúmenes)
-```bash
-docker-compose down -v
-```
-
-### Conectarse a PostgreSQL
-```bash
-docker-compose exec postgres psql -U www-admin -d hidroponico
-```
-
-### Acceder al contenedor backend
-```bash
-docker-compose exec backend bash
-```
-
-## 📊 Modelo de Datos
-
-El modelo incluye 20 entidades organizadas en:
-
-- **Organización**: empresa, sede, bloque, espacio
-- **Usuarios**: persona, usuario, rol, usuario_rol, metodo_acceso, acceso_espacio
-- **Infraestructura**: tipo_espacio, tipo_estructura, estructura
-- **Cultivos**: tipo_cultivo, cultivo, variedad_cultivo
-- **Producción**: fase_produccion, cultivo_fase
-- **Nutrición**: nutriente, fase_nutriente
-
-## 🔐 Configuración
-
-Las variables de entorno se configuran en `docker-compose.yml`:
-
-- `DB_HOST`: postgres (dentro de Docker) o localhost (fuera)
-- `DB_PORT`: 5432
-- `DB_NAME`: hidroponico
-- `DB_USER`: www-admin
-- `DB_PASSWORD`: hello!
-
-## 📝 Notas
-
-- El frontend se abre directamente desde el archivo HTML (no necesita servidor)
-- La API está disponible en http://localhost:8000
-- La documentación interactiva de la API está en http://localhost:8000/docs
-- Los datos de PostgreSQL se persisten en un volumen de Docker
-
-## 🐛 Solución de Problemas
-
-### Error: "No se puede conectar a la API"
-- Verifica que el backend esté corriendo: `docker-compose ps`
-- Revisa los logs: `docker-compose logs backend`
-- Asegúrate de que el puerto 8000 no esté ocupado
-
-### Error: "CORS" en el frontend
-- Si abres el HTML desde `file://`, puede haber problemas de CORS
-- Considera usar un servidor local simple o configurar CORS en FastAPI
-
-### Error al crear/editar registros
-- Verifica que los campos requeridos estén completos
-- Revisa las foreign keys (deben existir los registros relacionados)
-
-
-## 🧪 Pruebas Automatizadas y Reportes
-
-El proyecto incluye pruebas automatizadas usando pytest y Selenium, y genera reportes tanto en HTML como en TXT para facilitar la revisión de resultados.
-
-### Pruebas Unitarias
-
-- **Modelos** (`test_unit_models.py`): Pruebas para los modelos de SQLAlchemy
-- **Schemas** (`test_unit_schemas.py`): Pruebas para los esquemas de Pydantic
-- **API** (`test_unit_api.py`): Pruebas para los endpoints de FastAPI
-
-### Pruebas de Integración
-
-- **Selenium** (`test_integration_flow.py`): Pruebas end-to-end del frontend
-
-### Ejecución y Reportes Paso a Paso
-
-1. **Ejecutar todas las pruebas y generar reportes**
-
-	Ejecuta el siguiente script para correr todas las pruebas y generar automáticamente:
-	- Un reporte HTML visual e interactivo
-	- Un reporte TXT detallado con toda la salida de pytest
-
-	```bash
-	python run_tests_with_txt.py
-	```
-
-	Esto creará ambos archivos en la carpeta `resultados/`:
-	- `resultados/report_all_tests.html`
-	- `resultados/report_all_tests.txt`
-
-2. **Visualizar el reporte HTML**
-
-	- Abre el archivo `resultados/report_all_tests.html` en tu navegador.
-	- Asegúrate de que la URL termine con `?sort=result` para ver los resultados ordenados por estado. El archivo ya está configurado para redirigirte automáticamente si lo abres sin ese parámetro.
-	- Ejemplo de URL local:
-	  ```
-	  file:///C:/Users/Juan%20Forero/Desktop/hidroponico_pruebas/resultados/report_all_tests.html?sort=result
-	  ```
-	- El reporte HTML muestra:
-	  - Estado de cada prueba (Passed, Failed, Skipped, etc)
-	  - Logs y salidas de cada test
-	  - Filtros y orden dinámico
-	  - Resumen de ejecución y tiempos
-
-3. **Visualizar el reporte TXT**
-
-	- Abre el archivo `resultados/report_all_tests.txt` con cualquier editor de texto.
-	- Este archivo contiene toda la salida detallada de pytest, incluyendo:
-	  - Resultados de cada test
-	  - Tracebacks completos
-	  - Resúmenes de fallos, advertencias y tests lentos
-
-4. **Conservar históricos de reportes**
-
-	- Puedes copiar o renombrar los archivos de la carpeta `resultados/` si deseas conservar reportes de diferentes ejecuciones.
-
-5. **Más información**
-
-	- Consulta `resultados/README.md` para una guía rápida sobre la visualización del reporte HTML.
-	- Para detalles sobre las pruebas, revisa `tests/READMEtest.md`.
-
-### Comandos adicionales
-
-```bash
-# Todas las pruebas (sin reporte especial)
-pytest tests/
-
-# Solo pruebas unitarias
-pytest tests/ -m unit
-
-# Solo pruebas de integración
-pytest tests/ -m integration
-
-# Con cobertura
-pytest tests/ --cov=backend --cov-report=html
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+├── tests/                 # Suite de pruebas (ver sección Testing)
+├── resultados/            # Reportes generados (HTML/TXT)
+├── assets/                # Recursos para presentación
+├── JSON.json              # Definición de schema y datos iniciales
+├── init.sql               # Inicialización mínima de BD
+├── create_database.py     # Script: lee JSON.json y crea/popula tablas
+├── test_database.py       # Script de smoke test contra la BD
+├── run_tests_with_txt.py  # Runner de pruebas con doble reporte
+├── docker-compose.yml     # PostgreSQL + Python + Backend
+├── Dockerfile
+├── .env.example           # Plantilla de variables de entorno
+├── requirements.txt
+├── presentation.html      # Slides de presentación del proyecto
+├── GUIA_PRESENTACION.md   # Guion de la presentación académica
+└── PRUEBAS.md             # Documentación detallada de la estrategia de pruebas
 ```
 
 ---
 
-Si tienes dudas sobre cómo interpretar los reportes, consulta con el equipo de pruebas o revisa la documentación de [pytest-html](https://pypi.org/project/pytest-html/).
+## Troubleshooting
 
-## 📄 Licencia
+### "No se puede conectar a la API"
+- `docker-compose ps` para ver el estado de los contenedores.
+- `docker-compose logs backend` para revisar errores.
+- Verificar que el puerto 8000 (o el definido en `BACKEND_PORT`) esté libre.
 
-Este proyecto es para fines educativos y de prueba.
+### Error de CORS en el frontend
+- Si abres `frontend/index.html` con `file://`, algunos navegadores bloquean fetch a `localhost:8000`. Servir el frontend con un server local (`python -m http.server`) o configurar CORS más estricto en producción.
+
+### Selenium no encuentra el navegador
+- Asegurarse de tener Chrome instalado.
+- `webdriver-manager` debería descargar el driver automáticamente; si no, definir `WDM_LOCAL=1`.
+
+### Las tablas no se crean
+- Verificar que el contenedor `postgres` esté `healthy`: `docker-compose ps`.
+- Ejecutar manualmente `docker-compose exec python python create_database.py`.
+
+---
+
+## Mejoras pendientes
+
+- Tests de carga sobre la API con `locust` o `k6`.
+- CI con GitHub Actions corriendo unit tests en cada push (los integration con Selenium requieren runner con Chrome).
+- Mocks de DB para unit tests de modelos (ahora dependen del contenedor real).
+- CORS restringido a orígenes específicos en producción (actualmente `allow_origins=["*"]`).
+
+---
+
+## Licencia
+
+Proyecto académico — Universidad Surcolombiana (USCO).
+
+---
+
+**Materia:** Pruebas de Software · **Stack:** FastAPI · PostgreSQL · pytest · Selenium · Docker

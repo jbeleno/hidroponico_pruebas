@@ -5,17 +5,17 @@ services:
     image: postgres:15-alpine
     container_name: hidroponico_db
     environment:
-      POSTGRES_DB: hidroponico
-      POSTGRES_USER: www-admin
-      POSTGRES_PASSWORD: hello!
+      POSTGRES_DB: ${DB_NAME:-hidroponico}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required (see .env.example)}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5437:5432"
+      - "${DB_PORT_HOST:-5437}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U www-admin -d hidroponico"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-hidroponico}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -33,10 +33,10 @@ services:
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: hidroponico
-      DB_USER: www-admin
-      DB_PASSWORD: hello!
-    command: tail -f /dev/null  # Mantiene el contenedor corriendo
+      DB_NAME: ${DB_NAME:-hidroponico}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+    command: tail -f /dev/null
 
   backend:
     build: .
@@ -50,13 +50,12 @@ services:
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: hidroponico
-      DB_USER: www-admin
-      DB_PASSWORD: hello!
+      DB_NAME: ${DB_NAME:-hidroponico}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 
 volumes:
   postgres_data:
-
